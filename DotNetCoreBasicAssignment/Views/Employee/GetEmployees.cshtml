@@ -1,0 +1,159 @@
+﻿@model DataTransferObject.EmployeeDTO;
+@{
+    ViewData["Title"] = "GetEmployees";
+}
+
+<h2>Employees Dashboard</h2>
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#searchText").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+
+        function AddEmployee() {
+            var url = '@Url.Action("AddEmployee", "Employee")';
+            window.location.href = url;
+        }
+
+        //function searchData() {
+        //    var searchText = $("#searchText".val());
+        //    $.ajax(
+        //        {
+        //            url: "",
+        //            data: searchData,
+        //            type: JSON,
+        //            success: function (result) {
+        //                alert(result);
+        //            }
+        //        }
+        //    )
+        //}
+
+    </script>
+
+    <style>
+        #customers {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+            #customers td, #customers th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            #customers tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            #customers tr:hover {
+                background-color: #ddd;
+            }
+
+            #customers th {
+                padding - top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #1a1aff;
+                color: white;
+            }
+
+        .searchLabel {
+            width: 50%;
+            display:inline;
+        }
+
+        .searchBox {
+            display: inline;
+            height: 34px;
+            padding: 6px 35px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+
+        }
+
+        .frm-grp {
+            width: 100%;
+            height: 20px;
+            display:inline-block;
+            padding-bottom: 50px;
+        }
+        .btn-grp {
+            width: 50%;
+            left: 0%;
+            display: inline;
+            padding-right: 60%;
+        }
+    </style>
+
+
+
+</head>
+<body>
+
+    <div class="frm-grp">
+        <div class="btn-grp">
+            <input type="button" value="AddEmployee" class="btn btn-primary" onclick="AddEmployee();" />
+        </div>
+        <div class="searchLabel">
+            <label class="control-label" id="">Search here : </label>
+            <input class="searchBox" id="searchText" />
+        </div>
+    </div>
+
+    <table id="customers">
+
+        <tr>
+            <th style="display:none;"></th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>MobileNumber</th>
+            <th>Address</th>
+            <th>Gender</th>
+            <th>Designation</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tbody id="myTable">
+
+            @foreach (var items in Model.employeeList)
+            {
+                <tr>
+                    <td style="display:none;">@Html.HiddenFor(m => items.ID)</td>
+                    <td>@Html.DisplayFor(m => items.Name)</td>
+                    <td>@Html.DisplayFor(m => items.Email)</td>
+                    <td>@Html.DisplayFor(m => items.MobileNumber)</td>
+                    <td>@Html.DisplayFor(m => items.Address)</td>
+                    <td>@Html.DisplayFor(m => items.Gender)</td>
+                    <td>@Html.DisplayFor(m => items.Designation)</td>
+                    <td><a asp-action="EditEmployee" asp-route-id="@items.ID" class="btn btn-sm btn-success">EDIT</a></td>
+                    <td><a asp-action="DeleteEmployee" asp-route-id="@items.ID" class="btn btn-sm btn-primary">DETAILS</a></td>
+                    <td><a asp-action="Delete" asp-route-id="@items.ID" class="btn btn-sm btn-danger">DELETE</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</body>
+</html>
+

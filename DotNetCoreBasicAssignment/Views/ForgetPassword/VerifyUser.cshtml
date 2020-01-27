@@ -1,0 +1,49 @@
+﻿@model DataTransferObject.ForgetPassword.ForgetPasswordDTO
+
+@{
+    ViewData["Title"] = "VerifyUser";
+}
+
+<head>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script type="text/javascript">
+
+            function getAuthToken() {
+                var username = $("#username").val();
+                var newUrl = '@Url.Action("ForgetPassword","ForgetPassword")';
+                var url = '@Url.Action("VerifyUser", "ForgetPassword")';
+
+                $.ajax({
+                    type: "POST",
+                    data: { username: username },
+                    url: url,
+                    dataType: "json",
+                    success: function (result) {
+                        console.log(result);
+                        var url = newUrl + "/" + username + "/" + result;
+                        window.location.href = url;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve data.');
+                        console.log(thrownError);
+                    }
+                })
+            }
+    </script>
+</head>
+
+<h2>VerifyUser</h2>
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="form-group">
+    <label asp-for="UserName" class="control-label"></label>
+    <input id="username" asp-for="UserName" class="form-control" />
+    <span asp-validation-for="UserName" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <input type="button" value="Verify" class="btn btn-success" onclick="getAuthToken();" />
+    @*<a asp-action="SignIn">New User! SignIn</a>*@
+</div>
